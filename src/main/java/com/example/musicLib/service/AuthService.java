@@ -14,7 +14,6 @@ import com.example.musicLib.repository.UserRepository;
 import com.example.musicLib.utils.Hash;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class AuthService implements SharedService<Session> {
@@ -43,19 +42,12 @@ public class AuthService implements SharedService<Session> {
 
 			sessionRepository.save(currentSession);
 
-			// this.setHttpSession(request, currentSession);
-
 			userSessions.add(currentSession);
 			currentUser.setSessions(userSessions);
 			userRepository.save(currentUser);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-	}
-
-	private void setHttpSession(HttpServletRequest request, Session session) {
-		HttpSession httpSession = request.getSession();
-		httpSession.setAttribute("session_token", session.getToken());
 	}
 
 	public Boolean validatesAuthToken(String authToken) {
@@ -68,6 +60,19 @@ public class AuthService implements SharedService<Session> {
 		if (session.getEndedAt() != null) {
 			return false;
 		}
+
+		return true;
+	}
+
+	public Boolean destroySessionByAuthToken(String authToken) {
+		Session session = this.sessionRepository.findByToken(authToken);
+
+		if (session == null) {
+			return false;
+		}
+
+		session.setEndedAt(new Date());
+		sessionRepository.save(session);
 
 		return true;
 	}

@@ -30,9 +30,6 @@ public class AuthenticationFilter implements Filter {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-		System.out.println("====== Token ========");
-		System.out.println(httpServletRequest.getHeader("Token"));
-
 		if (httpServletRequest.getHeader("Token") == null) {
 			httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuário não autorizado");
 			return;
