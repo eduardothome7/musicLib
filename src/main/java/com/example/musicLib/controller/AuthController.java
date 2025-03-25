@@ -54,7 +54,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/sign_up")
-	public ResponseEntity<?> add(@RequestBody User user) {
+	public ResponseEntity<?> add(HttpServletRequest request, @RequestBody User user) {
 		try {
 
 			User userExists = userService.getByEmail(user.getEmail());
@@ -67,7 +67,11 @@ public class AuthController {
 
 			User saved = userService.save(user);
 
-			return ResponseEntity.ok(saved);
+			this.authService.setSessionToCurrentUser(request, saved);
+
+			User userWithSession = userService.getByEmail(user.getEmail());
+
+			return ResponseEntity.ok(userWithSession);
 
 		} catch (Exception e) {
 			return ResponseEntity

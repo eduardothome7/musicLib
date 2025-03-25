@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")  // Aplica a todos os endpoints
             .allowedOrigins("http://localhost:3000")  // Permite o frontend no localhost:3000
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")  // Métodos permitidos
-            .allowedHeaders("Content-Type", "Authorization")  // Cabeçalhos permitidos
+            .allowedHeaders("Content-Type", "Token")  // Cabeçalhos permitidos
             .allowCredentials(true);  // Permite credenciais como cookies ou tokens
     }
 }

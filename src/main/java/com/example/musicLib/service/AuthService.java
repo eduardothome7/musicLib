@@ -1,5 +1,6 @@
 package com.example.musicLib.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,10 @@ public class AuthService implements SharedService<Session> {
 			List<Session> userSessions = currentUser.getSessions();
 			Session currentSession = new Session();
 
+			if (userSessions == null) {
+				userSessions = new ArrayList<Session>();
+			}
+
 			currentSession.setUser(currentUser);
 			String userSessionToken = Hash.generateHashToken(currentUser);
 
@@ -44,7 +49,12 @@ public class AuthService implements SharedService<Session> {
 
 			userSessions.add(currentSession);
 			currentUser.setSessions(userSessions);
+
+			System.out.println(userSessions);
+
+			System.out.println("Save User");
 			userRepository.save(currentUser);
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
